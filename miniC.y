@@ -262,45 +262,45 @@ COMPOUNDSTMT :
 }
 ;
 STMT : 
-ASSIGN STMT {
+ASSIGN ';' STMT {
 	struct STMT *stmt = (struct STMT *) malloc (sizeof (struct STMT));
 	stmt->s = eAssign;
 	stmt->stmt.assign_ = $1;
-	stmt->prev = $2;
-	$$ = stmt;
-}
-|
-ASSIGN {
-	struct STMT *stmt = (struct STMT *) malloc (sizeof (struct STMT));
-	stmt->s = eAssign;
-	stmt->stmt.assign_ = $1;
-	$$ = stmt;
-}
-|
-CALL STMT {
-	struct STMT *stmt = (struct STMT *) malloc (sizeof (struct STMT));
-	stmt->s = eCall;
-	stmt->stmt.call_ = $1;
-	stmt->prev = $2;
-	$$ = stmt;
-}
-|
-CALL {
-	struct STMT *stmt = (struct STMT *) malloc (sizeof (struct STMT));
-	stmt->s = eCall;
-	stmt->stmt.call_ = $1;
-	$$ = stmt;
-}
-|
-RETURN EXPR STMT {
-	struct STMT *stmt = (struct STMT *) malloc (sizeof (struct STMT));
-	stmt->s = eRet;
-	stmt->stmt.return_ = $2;
 	stmt->prev = $3;
 	$$ = stmt;
 }
 |
-RETURN EXPR {
+ASSIGN ';' {
+	struct STMT *stmt = (struct STMT *) malloc (sizeof (struct STMT));
+	stmt->s = eAssign;
+	stmt->stmt.assign_ = $1;
+	$$ = stmt;
+}
+|
+CALL ';' STMT {
+	struct STMT *stmt = (struct STMT *) malloc (sizeof (struct STMT));
+	stmt->s = eCall;
+	stmt->stmt.call_ = $1;
+	stmt->prev = $3;
+	$$ = stmt;
+}
+|
+CALL ';' {
+	struct STMT *stmt = (struct STMT *) malloc (sizeof (struct STMT));
+	stmt->s = eCall;
+	stmt->stmt.call_ = $1;
+	$$ = stmt;
+}
+|
+RETURN EXPR ';' STMT {
+	struct STMT *stmt = (struct STMT *) malloc (sizeof (struct STMT));
+	stmt->s = eRet;
+	stmt->stmt.return_ = $2;
+	stmt->prev = $4;
+	$$ = stmt;
+}
+|
+RETURN EXPR ';' {
 	struct STMT *stmt = (struct STMT *) malloc (sizeof (struct STMT));
 	stmt->s = eRet;
 	stmt->stmt.return_ = $2;
@@ -368,7 +368,7 @@ COMPOUNDSTMT {
 }
 ;
 ASSIGN : 
-ID '[' EXPR ']' '=' EXPR ';' {
+ID '[' EXPR ']' '=' EXPR {
 	struct ASSIGN *asmt = (struct ASSIGN *) malloc (sizeof (struct ASSIGN));
 	asmt->ID = $1;
 	asmt->index = $3;
@@ -376,7 +376,7 @@ ID '[' EXPR ']' '=' EXPR ';' {
 	$$=asmt;
 }
 |
-ID '=' EXPR ';' {
+ID '=' EXPR {
 	struct ASSIGN *asmt = (struct ASSIGN *) malloc (sizeof (struct ASSIGN));
 	asmt->ID = $1;
 	asmt->expr = $3;

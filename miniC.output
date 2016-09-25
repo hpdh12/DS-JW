@@ -7,18 +7,15 @@ Terminals unused in grammar
 State 17 conflicts: 2 shift/reduce
 State 19 conflicts: 2 shift/reduce
 State 51 conflicts: 7 shift/reduce
-State 53 conflicts: 7 shift/reduce
-State 54 conflicts: 7 shift/reduce
 State 55 conflicts: 7 shift/reduce
 State 56 conflicts: 7 shift/reduce
 State 57 conflicts: 7 shift/reduce
-State 72 conflicts: 1 shift/reduce
-State 76 conflicts: 7 shift/reduce
+State 87 conflicts: 7 shift/reduce
+State 88 conflicts: 7 shift/reduce
 State 105 conflicts: 10 shift/reduce
 State 106 conflicts: 10 shift/reduce
-State 129 conflicts: 1 shift/reduce
-State 131 conflicts: 10 shift/reduce
-State 132 conflicts: 10 shift/reduce
+State 108 conflicts: 7 shift/reduce
+State 130 conflicts: 1 shift/reduce
 State 133 conflicts: 10 shift/reduce
 State 134 conflicts: 10 shift/reduce
 State 135 conflicts: 10 shift/reduce
@@ -27,7 +24,9 @@ State 137 conflicts: 10 shift/reduce
 State 138 conflicts: 10 shift/reduce
 State 139 conflicts: 10 shift/reduce
 State 140 conflicts: 10 shift/reduce
-State 147 conflicts: 1 shift/reduce
+State 141 conflicts: 10 shift/reduce
+State 142 conflicts: 10 shift/reduce
+State 149 conflicts: 1 shift/reduce
 
 
 Grammar
@@ -65,12 +64,12 @@ Grammar
    24             | '{' DECLARATION '}'
    25             | '{' '}'
 
-   26 STMT: ASSIGN STMT
-   27     | ASSIGN
-   28     | CALL STMT
-   29     | CALL
-   30     | RETURN EXPR STMT
-   31     | RETURN EXPR
+   26 STMT: ASSIGN ';' STMT
+   27     | ASSIGN ';'
+   28     | CALL ';' STMT
+   29     | CALL ';'
+   30     | RETURN EXPR ';' STMT
+   31     | RETURN EXPR ';'
    32     | WHILE_S STMT
    33     | WHILE_S
    34     | FOR_S STMT
@@ -80,8 +79,8 @@ Grammar
    38     | COMPOUNDSTMT STMT
    39     | COMPOUNDSTMT
 
-   40 ASSIGN: ID '[' EXPR ']' '=' EXPR ';'
-   41       | ID '=' EXPR ';'
+   40 ASSIGN: ID '[' EXPR ']' '=' EXPR
+   41       | ID '=' EXPR
 
    42 CALL: ID '(' ARG ')' ';'
    43     | ID '(' ')' ';'
@@ -138,7 +137,7 @@ $end (0) 0
 ',' (44) 8 9 44
 '-' (45) 63
 '/' (47) 65
-';' (59) 4 5 6 7 40 41 42 43 47 48
+';' (59) 4 5 6 7 26 27 28 29 30 31 42 43 47 48
 '<' (60) 67
 '=' (61) 40 41
 '>' (62) 66
@@ -683,8 +682,8 @@ State 42
 
 State 43
 
-   40 ASSIGN: ID . '[' EXPR ']' '=' EXPR ';'
-   41       | ID . '=' EXPR ';'
+   40 ASSIGN: ID . '[' EXPR ']' '=' EXPR
+   41       | ID . '=' EXPR
    42 CALL: ID . '(' ARG ')' ';'
    43     | ID . '(' ')' ';'
 
@@ -738,8 +737,8 @@ State 47
 
 State 48
 
-   30 STMT: RETURN . EXPR STMT
-   31     | RETURN . EXPR
+   30 STMT: RETURN . EXPR ';' STMT
+   31     | RETURN . EXPR ';'
 
     INTNUM    shift, and go to state 70
     FLOATNUM  shift, and go to state 71
@@ -827,64 +826,18 @@ State 52
 
 State 53
 
-   26 STMT: ASSIGN . STMT
-   27     | ASSIGN .
+   26 STMT: ASSIGN . ';' STMT
+   27     | ASSIGN . ';'
 
-    ID      shift, and go to state 43
-    FOR     shift, and go to state 44
-    WHILE   shift, and go to state 45
-    DO      shift, and go to state 46
-    IF      shift, and go to state 47
-    RETURN  shift, and go to state 48
-    '{'     shift, and go to state 36
-
-    ID        [reduce using rule 27 (STMT)]
-    FOR       [reduce using rule 27 (STMT)]
-    WHILE     [reduce using rule 27 (STMT)]
-    DO        [reduce using rule 27 (STMT)]
-    IF        [reduce using rule 27 (STMT)]
-    RETURN    [reduce using rule 27 (STMT)]
-    '{'       [reduce using rule 27 (STMT)]
-    $default  reduce using rule 27 (STMT)
-
-    COMPOUNDSTMT  go to state 51
-    STMT          go to state 87
-    ASSIGN        go to state 53
-    CALL          go to state 54
-    WHILE_S       go to state 55
-    FOR_S         go to state 56
-    IF_S          go to state 57
+    ';'  shift, and go to state 87
 
 
 State 54
 
-   28 STMT: CALL . STMT
-   29     | CALL .
+   28 STMT: CALL . ';' STMT
+   29     | CALL . ';'
 
-    ID      shift, and go to state 43
-    FOR     shift, and go to state 44
-    WHILE   shift, and go to state 45
-    DO      shift, and go to state 46
-    IF      shift, and go to state 47
-    RETURN  shift, and go to state 48
-    '{'     shift, and go to state 36
-
-    ID        [reduce using rule 29 (STMT)]
-    FOR       [reduce using rule 29 (STMT)]
-    WHILE     [reduce using rule 29 (STMT)]
-    DO        [reduce using rule 29 (STMT)]
-    IF        [reduce using rule 29 (STMT)]
-    RETURN    [reduce using rule 29 (STMT)]
-    '{'       [reduce using rule 29 (STMT)]
-    $default  reduce using rule 29 (STMT)
-
-    COMPOUNDSTMT  go to state 51
-    STMT          go to state 88
-    ASSIGN        go to state 53
-    CALL          go to state 54
-    WHILE_S       go to state 55
-    FOR_S         go to state 56
-    IF_S          go to state 57
+    ';'  shift, and go to state 88
 
 
 State 55
@@ -1029,7 +982,7 @@ State 62
 
 State 63
 
-   40 ASSIGN: ID '[' . EXPR ']' '=' EXPR ';'
+   40 ASSIGN: ID '[' . EXPR ']' '=' EXPR
 
     INTNUM    shift, and go to state 70
     FLOATNUM  shift, and go to state 71
@@ -1072,7 +1025,7 @@ State 64
 
 State 65
 
-   41 ASSIGN: ID '=' . EXPR ';'
+   41 ASSIGN: ID '=' . EXPR
 
     INTNUM    shift, and go to state 70
     FLOATNUM  shift, and go to state 71
@@ -1174,7 +1127,6 @@ State 72
     UNARY     shift, and go to state 73
     '('       shift, and go to state 104
 
-    ID        [reduce using rule 73 (ID_S)]
     $default  reduce using rule 73 (ID_S)
 
     CALL    go to state 75
@@ -1236,8 +1188,8 @@ State 75
 
 State 76
 
-   30 STMT: RETURN EXPR . STMT
-   31     | RETURN EXPR .
+   30 STMT: RETURN EXPR . ';' STMT
+   31     | RETURN EXPR . ';'
    62 ADDIOP: EXPR . '+' EXPR
    63       | EXPR . '-' EXPR
    64 MULTOP: EXPR . '*' EXPR
@@ -1249,40 +1201,17 @@ State 76
    70 EQLTOP: EXPR . "==" EXPR
    71       | EXPR . "!=" EXPR
 
-    ID      shift, and go to state 43
-    FOR     shift, and go to state 44
-    WHILE   shift, and go to state 45
-    DO      shift, and go to state 46
-    IF      shift, and go to state 47
-    RETURN  shift, and go to state 48
-    '{'     shift, and go to state 36
-    '+'     shift, and go to state 108
-    '-'     shift, and go to state 109
-    '*'     shift, and go to state 110
-    '/'     shift, and go to state 111
-    '>'     shift, and go to state 112
-    '<'     shift, and go to state 113
-    ">="    shift, and go to state 114
-    "<="    shift, and go to state 115
-    "=="    shift, and go to state 116
-    "!="    shift, and go to state 117
-
-    ID        [reduce using rule 31 (STMT)]
-    FOR       [reduce using rule 31 (STMT)]
-    WHILE     [reduce using rule 31 (STMT)]
-    DO        [reduce using rule 31 (STMT)]
-    IF        [reduce using rule 31 (STMT)]
-    RETURN    [reduce using rule 31 (STMT)]
-    '{'       [reduce using rule 31 (STMT)]
-    $default  reduce using rule 31 (STMT)
-
-    COMPOUNDSTMT  go to state 51
-    STMT          go to state 118
-    ASSIGN        go to state 53
-    CALL          go to state 54
-    WHILE_S       go to state 55
-    FOR_S         go to state 56
-    IF_S          go to state 57
+    ';'   shift, and go to state 108
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
 
 
 State 77
@@ -1357,16 +1286,64 @@ State 86
 
 State 87
 
-   26 STMT: ASSIGN STMT .
+   26 STMT: ASSIGN ';' . STMT
+   27     | ASSIGN ';' .
 
-    $default  reduce using rule 26 (STMT)
+    ID      shift, and go to state 43
+    FOR     shift, and go to state 44
+    WHILE   shift, and go to state 45
+    DO      shift, and go to state 46
+    IF      shift, and go to state 47
+    RETURN  shift, and go to state 48
+    '{'     shift, and go to state 36
+
+    ID        [reduce using rule 27 (STMT)]
+    FOR       [reduce using rule 27 (STMT)]
+    WHILE     [reduce using rule 27 (STMT)]
+    DO        [reduce using rule 27 (STMT)]
+    IF        [reduce using rule 27 (STMT)]
+    RETURN    [reduce using rule 27 (STMT)]
+    '{'       [reduce using rule 27 (STMT)]
+    $default  reduce using rule 27 (STMT)
+
+    COMPOUNDSTMT  go to state 51
+    STMT          go to state 120
+    ASSIGN        go to state 53
+    CALL          go to state 54
+    WHILE_S       go to state 55
+    FOR_S         go to state 56
+    IF_S          go to state 57
 
 
 State 88
 
-   28 STMT: CALL STMT .
+   28 STMT: CALL ';' . STMT
+   29     | CALL ';' .
 
-    $default  reduce using rule 28 (STMT)
+    ID      shift, and go to state 43
+    FOR     shift, and go to state 44
+    WHILE   shift, and go to state 45
+    DO      shift, and go to state 46
+    IF      shift, and go to state 47
+    RETURN  shift, and go to state 48
+    '{'     shift, and go to state 36
+
+    ID        [reduce using rule 29 (STMT)]
+    FOR       [reduce using rule 29 (STMT)]
+    WHILE     [reduce using rule 29 (STMT)]
+    DO        [reduce using rule 29 (STMT)]
+    IF        [reduce using rule 29 (STMT)]
+    RETURN    [reduce using rule 29 (STMT)]
+    '{'       [reduce using rule 29 (STMT)]
+    $default  reduce using rule 29 (STMT)
+
+    COMPOUNDSTMT  go to state 51
+    STMT          go to state 121
+    ASSIGN        go to state 53
+    CALL          go to state 54
+    WHILE_S       go to state 55
+    FOR_S         go to state 56
+    IF_S          go to state 57
 
 
 State 89
@@ -1406,7 +1383,7 @@ State 93
 
 State 94
 
-   40 ASSIGN: ID '[' EXPR . ']' '=' EXPR ';'
+   40 ASSIGN: ID '[' EXPR . ']' '=' EXPR
    62 ADDIOP: EXPR . '+' EXPR
    63       | EXPR . '-' EXPR
    64 MULTOP: EXPR . '*' EXPR
@@ -1418,31 +1395,31 @@ State 94
    70 EQLTOP: EXPR . "==" EXPR
    71       | EXPR . "!=" EXPR
 
-    ']'   shift, and go to state 120
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
+    ']'   shift, and go to state 122
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
 
 
 State 95
 
    43 CALL: ID '(' ')' . ';'
 
-    ';'  shift, and go to state 121
+    ';'  shift, and go to state 123
 
 
 State 96
 
    42 CALL: ID '(' ARG . ')' ';'
 
-    ')'  shift, and go to state 122
+    ')'  shift, and go to state 124
 
 
 State 97
@@ -1460,24 +1437,24 @@ State 97
    70 EQLTOP: EXPR . "==" EXPR
    71       | EXPR . "!=" EXPR
 
-    ','   shift, and go to state 123
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
+    ','   shift, and go to state 125
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
 
     $default  reduce using rule 45 (ARG)
 
 
 State 98
 
-   41 ASSIGN: ID '=' EXPR . ';'
+   41 ASSIGN: ID '=' EXPR .
    62 ADDIOP: EXPR . '+' EXPR
    63       | EXPR . '-' EXPR
    64 MULTOP: EXPR . '*' EXPR
@@ -1489,23 +1466,24 @@ State 98
    70 EQLTOP: EXPR . "==" EXPR
    71       | EXPR . "!=" EXPR
 
-    ';'   shift, and go to state 124
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
+
+    $default  reduce using rule 41 (ASSIGN)
 
 
 State 99
 
-   40 ASSIGN: ID . '[' EXPR ']' '=' EXPR ';'
-   41       | ID . '=' EXPR ';'
+   40 ASSIGN: ID . '[' EXPR ']' '=' EXPR
+   41       | ID . '=' EXPR
 
     '['  shift, and go to state 63
     '='  shift, and go to state 65
@@ -1515,7 +1493,7 @@ State 100
 
    48 FOR_S: FOR '(' ASSIGN . ';' EXPR ';' ASSIGN ')' STMT
 
-    ';'  shift, and go to state 125
+    ';'  shift, and go to state 126
 
 
 State 101
@@ -1532,24 +1510,24 @@ State 101
    70 EQLTOP: EXPR . "==" EXPR
    71       | EXPR . "!=" EXPR
 
-    ')'   shift, and go to state 126
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
+    ')'   shift, and go to state 127
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
 
 
 State 102
 
    47 WHILE_S: DO STMT WHILE . '(' EXPR ')' ';'
 
-    '('  shift, and go to state 127
+    '('  shift, and go to state 128
 
 
 State 103
@@ -1567,17 +1545,17 @@ State 103
    70 EQLTOP: EXPR . "==" EXPR
    71       | EXPR . "!=" EXPR
 
-    ')'   shift, and go to state 128
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
+    ')'   shift, and go to state 129
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
 
 
 State 104
@@ -1595,7 +1573,7 @@ State 104
 
     CALL    go to state 75
     ARG     go to state 96
-    EXPR    go to state 129
+    EXPR    go to state 130
     UNOP    go to state 77
     ADDIOP  go to state 78
     MULTOP  go to state 79
@@ -1618,16 +1596,16 @@ State 105
    71       | EXPR . "!=" EXPR
    72 ID_S: ID EXPR .
 
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
 
     '+'       [reduce using rule 72 (ID_S)]
     '-'       [reduce using rule 72 (ID_S)]
@@ -1656,16 +1634,16 @@ State 106
    70 EQLTOP: EXPR . "==" EXPR
    71       | EXPR . "!=" EXPR
 
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
 
     '+'       [reduce using rule 61 (UNOP)]
     '-'       [reduce using rule 61 (UNOP)]
@@ -1694,62 +1672,53 @@ State 107
    70 EQLTOP: EXPR . "==" EXPR
    71       | EXPR . "!=" EXPR
 
-    ')'   shift, and go to state 130
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
+    ')'   shift, and go to state 131
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
 
 
 State 108
 
-   62 ADDIOP: EXPR '+' . EXPR
+   30 STMT: RETURN EXPR ';' . STMT
+   31     | RETURN EXPR ';' .
 
-    INTNUM    shift, and go to state 70
-    FLOATNUM  shift, and go to state 71
-    ID        shift, and go to state 72
-    UNARY     shift, and go to state 73
-    '('       shift, and go to state 74
+    ID      shift, and go to state 43
+    FOR     shift, and go to state 44
+    WHILE   shift, and go to state 45
+    DO      shift, and go to state 46
+    IF      shift, and go to state 47
+    RETURN  shift, and go to state 48
+    '{'     shift, and go to state 36
 
-    CALL    go to state 75
-    EXPR    go to state 131
-    UNOP    go to state 77
-    ADDIOP  go to state 78
-    MULTOP  go to state 79
-    RELAOP  go to state 80
-    EQLTOP  go to state 81
-    ID_S    go to state 82
+    ID        [reduce using rule 31 (STMT)]
+    FOR       [reduce using rule 31 (STMT)]
+    WHILE     [reduce using rule 31 (STMT)]
+    DO        [reduce using rule 31 (STMT)]
+    IF        [reduce using rule 31 (STMT)]
+    RETURN    [reduce using rule 31 (STMT)]
+    '{'       [reduce using rule 31 (STMT)]
+    $default  reduce using rule 31 (STMT)
+
+    COMPOUNDSTMT  go to state 51
+    STMT          go to state 132
+    ASSIGN        go to state 53
+    CALL          go to state 54
+    WHILE_S       go to state 55
+    FOR_S         go to state 56
+    IF_S          go to state 57
 
 
 State 109
 
-   63 ADDIOP: EXPR '-' . EXPR
-
-    INTNUM    shift, and go to state 70
-    FLOATNUM  shift, and go to state 71
-    ID        shift, and go to state 72
-    UNARY     shift, and go to state 73
-    '('       shift, and go to state 74
-
-    CALL    go to state 75
-    EXPR    go to state 132
-    UNOP    go to state 77
-    ADDIOP  go to state 78
-    MULTOP  go to state 79
-    RELAOP  go to state 80
-    EQLTOP  go to state 81
-    ID_S    go to state 82
-
-
-State 110
-
-   64 MULTOP: EXPR '*' . EXPR
+   62 ADDIOP: EXPR '+' . EXPR
 
     INTNUM    shift, and go to state 70
     FLOATNUM  shift, and go to state 71
@@ -1767,9 +1736,9 @@ State 110
     ID_S    go to state 82
 
 
-State 111
+State 110
 
-   65 MULTOP: EXPR '/' . EXPR
+   63 ADDIOP: EXPR '-' . EXPR
 
     INTNUM    shift, and go to state 70
     FLOATNUM  shift, and go to state 71
@@ -1787,9 +1756,9 @@ State 111
     ID_S    go to state 82
 
 
-State 112
+State 111
 
-   66 RELAOP: EXPR '>' . EXPR
+   64 MULTOP: EXPR '*' . EXPR
 
     INTNUM    shift, and go to state 70
     FLOATNUM  shift, and go to state 71
@@ -1807,9 +1776,9 @@ State 112
     ID_S    go to state 82
 
 
-State 113
+State 112
 
-   67 RELAOP: EXPR '<' . EXPR
+   65 MULTOP: EXPR '/' . EXPR
 
     INTNUM    shift, and go to state 70
     FLOATNUM  shift, and go to state 71
@@ -1827,9 +1796,9 @@ State 113
     ID_S    go to state 82
 
 
-State 114
+State 113
 
-   68 RELAOP: EXPR ">=" . EXPR
+   66 RELAOP: EXPR '>' . EXPR
 
     INTNUM    shift, and go to state 70
     FLOATNUM  shift, and go to state 71
@@ -1847,9 +1816,9 @@ State 114
     ID_S    go to state 82
 
 
-State 115
+State 114
 
-   69 RELAOP: EXPR "<=" . EXPR
+   67 RELAOP: EXPR '<' . EXPR
 
     INTNUM    shift, and go to state 70
     FLOATNUM  shift, and go to state 71
@@ -1867,9 +1836,9 @@ State 115
     ID_S    go to state 82
 
 
-State 116
+State 115
 
-   70 EQLTOP: EXPR "==" . EXPR
+   68 RELAOP: EXPR ">=" . EXPR
 
     INTNUM    shift, and go to state 70
     FLOATNUM  shift, and go to state 71
@@ -1887,9 +1856,9 @@ State 116
     ID_S    go to state 82
 
 
-State 117
+State 116
 
-   71 EQLTOP: EXPR "!=" . EXPR
+   69 RELAOP: EXPR "<=" . EXPR
 
     INTNUM    shift, and go to state 70
     FLOATNUM  shift, and go to state 71
@@ -1907,11 +1876,44 @@ State 117
     ID_S    go to state 82
 
 
+State 117
+
+   70 EQLTOP: EXPR "==" . EXPR
+
+    INTNUM    shift, and go to state 70
+    FLOATNUM  shift, and go to state 71
+    ID        shift, and go to state 72
+    UNARY     shift, and go to state 73
+    '('       shift, and go to state 74
+
+    CALL    go to state 75
+    EXPR    go to state 141
+    UNOP    go to state 77
+    ADDIOP  go to state 78
+    MULTOP  go to state 79
+    RELAOP  go to state 80
+    EQLTOP  go to state 81
+    ID_S    go to state 82
+
+
 State 118
 
-   30 STMT: RETURN EXPR STMT .
+   71 EQLTOP: EXPR "!=" . EXPR
 
-    $default  reduce using rule 30 (STMT)
+    INTNUM    shift, and go to state 70
+    FLOATNUM  shift, and go to state 71
+    ID        shift, and go to state 72
+    UNARY     shift, and go to state 73
+    '('       shift, and go to state 74
+
+    CALL    go to state 75
+    EXPR    go to state 142
+    UNOP    go to state 77
+    ADDIOP  go to state 78
+    MULTOP  go to state 79
+    RELAOP  go to state 80
+    EQLTOP  go to state 81
+    ID_S    go to state 82
 
 
 State 119
@@ -1923,26 +1925,40 @@ State 119
 
 State 120
 
-   40 ASSIGN: ID '[' EXPR ']' . '=' EXPR ';'
+   26 STMT: ASSIGN ';' STMT .
 
-    '='  shift, and go to state 141
+    $default  reduce using rule 26 (STMT)
 
 
 State 121
+
+   28 STMT: CALL ';' STMT .
+
+    $default  reduce using rule 28 (STMT)
+
+
+State 122
+
+   40 ASSIGN: ID '[' EXPR ']' . '=' EXPR
+
+    '='  shift, and go to state 143
+
+
+State 123
 
    43 CALL: ID '(' ')' ';' .
 
     $default  reduce using rule 43 (CALL)
 
 
-State 122
+State 124
 
    42 CALL: ID '(' ARG ')' . ';'
 
-    ';'  shift, and go to state 142
+    ';'  shift, and go to state 144
 
 
-State 123
+State 125
 
    44 ARG: EXPR ',' . ARG
 
@@ -1953,35 +1969,8 @@ State 123
     '('       shift, and go to state 74
 
     CALL    go to state 75
-    ARG     go to state 143
+    ARG     go to state 145
     EXPR    go to state 97
-    UNOP    go to state 77
-    ADDIOP  go to state 78
-    MULTOP  go to state 79
-    RELAOP  go to state 80
-    EQLTOP  go to state 81
-    ID_S    go to state 82
-
-
-State 124
-
-   41 ASSIGN: ID '=' EXPR ';' .
-
-    $default  reduce using rule 41 (ASSIGN)
-
-
-State 125
-
-   48 FOR_S: FOR '(' ASSIGN ';' . EXPR ';' ASSIGN ')' STMT
-
-    INTNUM    shift, and go to state 70
-    FLOATNUM  shift, and go to state 71
-    ID        shift, and go to state 72
-    UNARY     shift, and go to state 73
-    '('       shift, and go to state 74
-
-    CALL    go to state 75
-    EXPR    go to state 144
     UNOP    go to state 77
     ADDIOP  go to state 78
     MULTOP  go to state 79
@@ -1992,28 +1981,7 @@ State 125
 
 State 126
 
-   46 WHILE_S: WHILE '(' EXPR ')' . STMT
-
-    ID      shift, and go to state 43
-    FOR     shift, and go to state 44
-    WHILE   shift, and go to state 45
-    DO      shift, and go to state 46
-    IF      shift, and go to state 47
-    RETURN  shift, and go to state 48
-    '{'     shift, and go to state 36
-
-    COMPOUNDSTMT  go to state 51
-    STMT          go to state 145
-    ASSIGN        go to state 53
-    CALL          go to state 54
-    WHILE_S       go to state 55
-    FOR_S         go to state 56
-    IF_S          go to state 57
-
-
-State 127
-
-   47 WHILE_S: DO STMT WHILE '(' . EXPR ')' ';'
+   48 FOR_S: FOR '(' ASSIGN ';' . EXPR ';' ASSIGN ')' STMT
 
     INTNUM    shift, and go to state 70
     FLOATNUM  shift, and go to state 71
@@ -2031,10 +1999,9 @@ State 127
     ID_S    go to state 82
 
 
-State 128
+State 127
 
-   49 IF_S: IF '(' EXPR ')' . STMT ELSE STMT
-   50     | IF '(' EXPR ')' . STMT
+   46 WHILE_S: WHILE '(' EXPR ')' . STMT
 
     ID      shift, and go to state 43
     FOR     shift, and go to state 44
@@ -2053,428 +2020,9 @@ State 128
     IF_S          go to state 57
 
 
-State 129
+State 128
 
-   44 ARG: EXPR . ',' ARG
-   45    | EXPR .
-   57 EXPR: '(' EXPR . ')'
-   62 ADDIOP: EXPR . '+' EXPR
-   63       | EXPR . '-' EXPR
-   64 MULTOP: EXPR . '*' EXPR
-   65       | EXPR . '/' EXPR
-   66 RELAOP: EXPR . '>' EXPR
-   67       | EXPR . '<' EXPR
-   68       | EXPR . ">=" EXPR
-   69       | EXPR . "<=" EXPR
-   70 EQLTOP: EXPR . "==" EXPR
-   71       | EXPR . "!=" EXPR
-
-    ','   shift, and go to state 123
-    ')'   shift, and go to state 130
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
-
-    ')'  [reduce using rule 45 (ARG)]
-
-
-State 130
-
-   57 EXPR: '(' EXPR ')' .
-
-    $default  reduce using rule 57 (EXPR)
-
-
-State 131
-
-   62 ADDIOP: EXPR . '+' EXPR
-   62       | EXPR '+' EXPR .
-   63       | EXPR . '-' EXPR
-   64 MULTOP: EXPR . '*' EXPR
-   65       | EXPR . '/' EXPR
-   66 RELAOP: EXPR . '>' EXPR
-   67       | EXPR . '<' EXPR
-   68       | EXPR . ">=" EXPR
-   69       | EXPR . "<=" EXPR
-   70 EQLTOP: EXPR . "==" EXPR
-   71       | EXPR . "!=" EXPR
-
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
-
-    '+'       [reduce using rule 62 (ADDIOP)]
-    '-'       [reduce using rule 62 (ADDIOP)]
-    '*'       [reduce using rule 62 (ADDIOP)]
-    '/'       [reduce using rule 62 (ADDIOP)]
-    '>'       [reduce using rule 62 (ADDIOP)]
-    '<'       [reduce using rule 62 (ADDIOP)]
-    ">="      [reduce using rule 62 (ADDIOP)]
-    "<="      [reduce using rule 62 (ADDIOP)]
-    "=="      [reduce using rule 62 (ADDIOP)]
-    "!="      [reduce using rule 62 (ADDIOP)]
-    $default  reduce using rule 62 (ADDIOP)
-
-
-State 132
-
-   62 ADDIOP: EXPR . '+' EXPR
-   63       | EXPR . '-' EXPR
-   63       | EXPR '-' EXPR .
-   64 MULTOP: EXPR . '*' EXPR
-   65       | EXPR . '/' EXPR
-   66 RELAOP: EXPR . '>' EXPR
-   67       | EXPR . '<' EXPR
-   68       | EXPR . ">=" EXPR
-   69       | EXPR . "<=" EXPR
-   70 EQLTOP: EXPR . "==" EXPR
-   71       | EXPR . "!=" EXPR
-
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
-
-    '+'       [reduce using rule 63 (ADDIOP)]
-    '-'       [reduce using rule 63 (ADDIOP)]
-    '*'       [reduce using rule 63 (ADDIOP)]
-    '/'       [reduce using rule 63 (ADDIOP)]
-    '>'       [reduce using rule 63 (ADDIOP)]
-    '<'       [reduce using rule 63 (ADDIOP)]
-    ">="      [reduce using rule 63 (ADDIOP)]
-    "<="      [reduce using rule 63 (ADDIOP)]
-    "=="      [reduce using rule 63 (ADDIOP)]
-    "!="      [reduce using rule 63 (ADDIOP)]
-    $default  reduce using rule 63 (ADDIOP)
-
-
-State 133
-
-   62 ADDIOP: EXPR . '+' EXPR
-   63       | EXPR . '-' EXPR
-   64 MULTOP: EXPR . '*' EXPR
-   64       | EXPR '*' EXPR .
-   65       | EXPR . '/' EXPR
-   66 RELAOP: EXPR . '>' EXPR
-   67       | EXPR . '<' EXPR
-   68       | EXPR . ">=" EXPR
-   69       | EXPR . "<=" EXPR
-   70 EQLTOP: EXPR . "==" EXPR
-   71       | EXPR . "!=" EXPR
-
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
-
-    '+'       [reduce using rule 64 (MULTOP)]
-    '-'       [reduce using rule 64 (MULTOP)]
-    '*'       [reduce using rule 64 (MULTOP)]
-    '/'       [reduce using rule 64 (MULTOP)]
-    '>'       [reduce using rule 64 (MULTOP)]
-    '<'       [reduce using rule 64 (MULTOP)]
-    ">="      [reduce using rule 64 (MULTOP)]
-    "<="      [reduce using rule 64 (MULTOP)]
-    "=="      [reduce using rule 64 (MULTOP)]
-    "!="      [reduce using rule 64 (MULTOP)]
-    $default  reduce using rule 64 (MULTOP)
-
-
-State 134
-
-   62 ADDIOP: EXPR . '+' EXPR
-   63       | EXPR . '-' EXPR
-   64 MULTOP: EXPR . '*' EXPR
-   65       | EXPR . '/' EXPR
-   65       | EXPR '/' EXPR .
-   66 RELAOP: EXPR . '>' EXPR
-   67       | EXPR . '<' EXPR
-   68       | EXPR . ">=" EXPR
-   69       | EXPR . "<=" EXPR
-   70 EQLTOP: EXPR . "==" EXPR
-   71       | EXPR . "!=" EXPR
-
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
-
-    '+'       [reduce using rule 65 (MULTOP)]
-    '-'       [reduce using rule 65 (MULTOP)]
-    '*'       [reduce using rule 65 (MULTOP)]
-    '/'       [reduce using rule 65 (MULTOP)]
-    '>'       [reduce using rule 65 (MULTOP)]
-    '<'       [reduce using rule 65 (MULTOP)]
-    ">="      [reduce using rule 65 (MULTOP)]
-    "<="      [reduce using rule 65 (MULTOP)]
-    "=="      [reduce using rule 65 (MULTOP)]
-    "!="      [reduce using rule 65 (MULTOP)]
-    $default  reduce using rule 65 (MULTOP)
-
-
-State 135
-
-   62 ADDIOP: EXPR . '+' EXPR
-   63       | EXPR . '-' EXPR
-   64 MULTOP: EXPR . '*' EXPR
-   65       | EXPR . '/' EXPR
-   66 RELAOP: EXPR . '>' EXPR
-   66       | EXPR '>' EXPR .
-   67       | EXPR . '<' EXPR
-   68       | EXPR . ">=" EXPR
-   69       | EXPR . "<=" EXPR
-   70 EQLTOP: EXPR . "==" EXPR
-   71       | EXPR . "!=" EXPR
-
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
-
-    '+'       [reduce using rule 66 (RELAOP)]
-    '-'       [reduce using rule 66 (RELAOP)]
-    '*'       [reduce using rule 66 (RELAOP)]
-    '/'       [reduce using rule 66 (RELAOP)]
-    '>'       [reduce using rule 66 (RELAOP)]
-    '<'       [reduce using rule 66 (RELAOP)]
-    ">="      [reduce using rule 66 (RELAOP)]
-    "<="      [reduce using rule 66 (RELAOP)]
-    "=="      [reduce using rule 66 (RELAOP)]
-    "!="      [reduce using rule 66 (RELAOP)]
-    $default  reduce using rule 66 (RELAOP)
-
-
-State 136
-
-   62 ADDIOP: EXPR . '+' EXPR
-   63       | EXPR . '-' EXPR
-   64 MULTOP: EXPR . '*' EXPR
-   65       | EXPR . '/' EXPR
-   66 RELAOP: EXPR . '>' EXPR
-   67       | EXPR . '<' EXPR
-   67       | EXPR '<' EXPR .
-   68       | EXPR . ">=" EXPR
-   69       | EXPR . "<=" EXPR
-   70 EQLTOP: EXPR . "==" EXPR
-   71       | EXPR . "!=" EXPR
-
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
-
-    '+'       [reduce using rule 67 (RELAOP)]
-    '-'       [reduce using rule 67 (RELAOP)]
-    '*'       [reduce using rule 67 (RELAOP)]
-    '/'       [reduce using rule 67 (RELAOP)]
-    '>'       [reduce using rule 67 (RELAOP)]
-    '<'       [reduce using rule 67 (RELAOP)]
-    ">="      [reduce using rule 67 (RELAOP)]
-    "<="      [reduce using rule 67 (RELAOP)]
-    "=="      [reduce using rule 67 (RELAOP)]
-    "!="      [reduce using rule 67 (RELAOP)]
-    $default  reduce using rule 67 (RELAOP)
-
-
-State 137
-
-   62 ADDIOP: EXPR . '+' EXPR
-   63       | EXPR . '-' EXPR
-   64 MULTOP: EXPR . '*' EXPR
-   65       | EXPR . '/' EXPR
-   66 RELAOP: EXPR . '>' EXPR
-   67       | EXPR . '<' EXPR
-   68       | EXPR . ">=" EXPR
-   68       | EXPR ">=" EXPR .
-   69       | EXPR . "<=" EXPR
-   70 EQLTOP: EXPR . "==" EXPR
-   71       | EXPR . "!=" EXPR
-
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
-
-    '+'       [reduce using rule 68 (RELAOP)]
-    '-'       [reduce using rule 68 (RELAOP)]
-    '*'       [reduce using rule 68 (RELAOP)]
-    '/'       [reduce using rule 68 (RELAOP)]
-    '>'       [reduce using rule 68 (RELAOP)]
-    '<'       [reduce using rule 68 (RELAOP)]
-    ">="      [reduce using rule 68 (RELAOP)]
-    "<="      [reduce using rule 68 (RELAOP)]
-    "=="      [reduce using rule 68 (RELAOP)]
-    "!="      [reduce using rule 68 (RELAOP)]
-    $default  reduce using rule 68 (RELAOP)
-
-
-State 138
-
-   62 ADDIOP: EXPR . '+' EXPR
-   63       | EXPR . '-' EXPR
-   64 MULTOP: EXPR . '*' EXPR
-   65       | EXPR . '/' EXPR
-   66 RELAOP: EXPR . '>' EXPR
-   67       | EXPR . '<' EXPR
-   68       | EXPR . ">=" EXPR
-   69       | EXPR . "<=" EXPR
-   69       | EXPR "<=" EXPR .
-   70 EQLTOP: EXPR . "==" EXPR
-   71       | EXPR . "!=" EXPR
-
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
-
-    '+'       [reduce using rule 69 (RELAOP)]
-    '-'       [reduce using rule 69 (RELAOP)]
-    '*'       [reduce using rule 69 (RELAOP)]
-    '/'       [reduce using rule 69 (RELAOP)]
-    '>'       [reduce using rule 69 (RELAOP)]
-    '<'       [reduce using rule 69 (RELAOP)]
-    ">="      [reduce using rule 69 (RELAOP)]
-    "<="      [reduce using rule 69 (RELAOP)]
-    "=="      [reduce using rule 69 (RELAOP)]
-    "!="      [reduce using rule 69 (RELAOP)]
-    $default  reduce using rule 69 (RELAOP)
-
-
-State 139
-
-   62 ADDIOP: EXPR . '+' EXPR
-   63       | EXPR . '-' EXPR
-   64 MULTOP: EXPR . '*' EXPR
-   65       | EXPR . '/' EXPR
-   66 RELAOP: EXPR . '>' EXPR
-   67       | EXPR . '<' EXPR
-   68       | EXPR . ">=" EXPR
-   69       | EXPR . "<=" EXPR
-   70 EQLTOP: EXPR . "==" EXPR
-   70       | EXPR "==" EXPR .
-   71       | EXPR . "!=" EXPR
-
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
-
-    '+'       [reduce using rule 70 (EQLTOP)]
-    '-'       [reduce using rule 70 (EQLTOP)]
-    '*'       [reduce using rule 70 (EQLTOP)]
-    '/'       [reduce using rule 70 (EQLTOP)]
-    '>'       [reduce using rule 70 (EQLTOP)]
-    '<'       [reduce using rule 70 (EQLTOP)]
-    ">="      [reduce using rule 70 (EQLTOP)]
-    "<="      [reduce using rule 70 (EQLTOP)]
-    "=="      [reduce using rule 70 (EQLTOP)]
-    "!="      [reduce using rule 70 (EQLTOP)]
-    $default  reduce using rule 70 (EQLTOP)
-
-
-State 140
-
-   62 ADDIOP: EXPR . '+' EXPR
-   63       | EXPR . '-' EXPR
-   64 MULTOP: EXPR . '*' EXPR
-   65       | EXPR . '/' EXPR
-   66 RELAOP: EXPR . '>' EXPR
-   67       | EXPR . '<' EXPR
-   68       | EXPR . ">=" EXPR
-   69       | EXPR . "<=" EXPR
-   70 EQLTOP: EXPR . "==" EXPR
-   71       | EXPR . "!=" EXPR
-   71       | EXPR "!=" EXPR .
-
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
-
-    '+'       [reduce using rule 71 (EQLTOP)]
-    '-'       [reduce using rule 71 (EQLTOP)]
-    '*'       [reduce using rule 71 (EQLTOP)]
-    '/'       [reduce using rule 71 (EQLTOP)]
-    '>'       [reduce using rule 71 (EQLTOP)]
-    '<'       [reduce using rule 71 (EQLTOP)]
-    ">="      [reduce using rule 71 (EQLTOP)]
-    "<="      [reduce using rule 71 (EQLTOP)]
-    "=="      [reduce using rule 71 (EQLTOP)]
-    "!="      [reduce using rule 71 (EQLTOP)]
-    $default  reduce using rule 71 (EQLTOP)
-
-
-State 141
-
-   40 ASSIGN: ID '[' EXPR ']' '=' . EXPR ';'
+   47 WHILE_S: DO STMT WHILE '(' . EXPR ')' ';'
 
     INTNUM    shift, and go to state 70
     FLOATNUM  shift, and go to state 71
@@ -2492,21 +2040,489 @@ State 141
     ID_S    go to state 82
 
 
+State 129
+
+   49 IF_S: IF '(' EXPR ')' . STMT ELSE STMT
+   50     | IF '(' EXPR ')' . STMT
+
+    ID      shift, and go to state 43
+    FOR     shift, and go to state 44
+    WHILE   shift, and go to state 45
+    DO      shift, and go to state 46
+    IF      shift, and go to state 47
+    RETURN  shift, and go to state 48
+    '{'     shift, and go to state 36
+
+    COMPOUNDSTMT  go to state 51
+    STMT          go to state 149
+    ASSIGN        go to state 53
+    CALL          go to state 54
+    WHILE_S       go to state 55
+    FOR_S         go to state 56
+    IF_S          go to state 57
+
+
+State 130
+
+   44 ARG: EXPR . ',' ARG
+   45    | EXPR .
+   57 EXPR: '(' EXPR . ')'
+   62 ADDIOP: EXPR . '+' EXPR
+   63       | EXPR . '-' EXPR
+   64 MULTOP: EXPR . '*' EXPR
+   65       | EXPR . '/' EXPR
+   66 RELAOP: EXPR . '>' EXPR
+   67       | EXPR . '<' EXPR
+   68       | EXPR . ">=" EXPR
+   69       | EXPR . "<=" EXPR
+   70 EQLTOP: EXPR . "==" EXPR
+   71       | EXPR . "!=" EXPR
+
+    ','   shift, and go to state 125
+    ')'   shift, and go to state 131
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
+
+    ')'  [reduce using rule 45 (ARG)]
+
+
+State 131
+
+   57 EXPR: '(' EXPR ')' .
+
+    $default  reduce using rule 57 (EXPR)
+
+
+State 132
+
+   30 STMT: RETURN EXPR ';' STMT .
+
+    $default  reduce using rule 30 (STMT)
+
+
+State 133
+
+   62 ADDIOP: EXPR . '+' EXPR
+   62       | EXPR '+' EXPR .
+   63       | EXPR . '-' EXPR
+   64 MULTOP: EXPR . '*' EXPR
+   65       | EXPR . '/' EXPR
+   66 RELAOP: EXPR . '>' EXPR
+   67       | EXPR . '<' EXPR
+   68       | EXPR . ">=" EXPR
+   69       | EXPR . "<=" EXPR
+   70 EQLTOP: EXPR . "==" EXPR
+   71       | EXPR . "!=" EXPR
+
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
+
+    '+'       [reduce using rule 62 (ADDIOP)]
+    '-'       [reduce using rule 62 (ADDIOP)]
+    '*'       [reduce using rule 62 (ADDIOP)]
+    '/'       [reduce using rule 62 (ADDIOP)]
+    '>'       [reduce using rule 62 (ADDIOP)]
+    '<'       [reduce using rule 62 (ADDIOP)]
+    ">="      [reduce using rule 62 (ADDIOP)]
+    "<="      [reduce using rule 62 (ADDIOP)]
+    "=="      [reduce using rule 62 (ADDIOP)]
+    "!="      [reduce using rule 62 (ADDIOP)]
+    $default  reduce using rule 62 (ADDIOP)
+
+
+State 134
+
+   62 ADDIOP: EXPR . '+' EXPR
+   63       | EXPR . '-' EXPR
+   63       | EXPR '-' EXPR .
+   64 MULTOP: EXPR . '*' EXPR
+   65       | EXPR . '/' EXPR
+   66 RELAOP: EXPR . '>' EXPR
+   67       | EXPR . '<' EXPR
+   68       | EXPR . ">=" EXPR
+   69       | EXPR . "<=" EXPR
+   70 EQLTOP: EXPR . "==" EXPR
+   71       | EXPR . "!=" EXPR
+
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
+
+    '+'       [reduce using rule 63 (ADDIOP)]
+    '-'       [reduce using rule 63 (ADDIOP)]
+    '*'       [reduce using rule 63 (ADDIOP)]
+    '/'       [reduce using rule 63 (ADDIOP)]
+    '>'       [reduce using rule 63 (ADDIOP)]
+    '<'       [reduce using rule 63 (ADDIOP)]
+    ">="      [reduce using rule 63 (ADDIOP)]
+    "<="      [reduce using rule 63 (ADDIOP)]
+    "=="      [reduce using rule 63 (ADDIOP)]
+    "!="      [reduce using rule 63 (ADDIOP)]
+    $default  reduce using rule 63 (ADDIOP)
+
+
+State 135
+
+   62 ADDIOP: EXPR . '+' EXPR
+   63       | EXPR . '-' EXPR
+   64 MULTOP: EXPR . '*' EXPR
+   64       | EXPR '*' EXPR .
+   65       | EXPR . '/' EXPR
+   66 RELAOP: EXPR . '>' EXPR
+   67       | EXPR . '<' EXPR
+   68       | EXPR . ">=" EXPR
+   69       | EXPR . "<=" EXPR
+   70 EQLTOP: EXPR . "==" EXPR
+   71       | EXPR . "!=" EXPR
+
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
+
+    '+'       [reduce using rule 64 (MULTOP)]
+    '-'       [reduce using rule 64 (MULTOP)]
+    '*'       [reduce using rule 64 (MULTOP)]
+    '/'       [reduce using rule 64 (MULTOP)]
+    '>'       [reduce using rule 64 (MULTOP)]
+    '<'       [reduce using rule 64 (MULTOP)]
+    ">="      [reduce using rule 64 (MULTOP)]
+    "<="      [reduce using rule 64 (MULTOP)]
+    "=="      [reduce using rule 64 (MULTOP)]
+    "!="      [reduce using rule 64 (MULTOP)]
+    $default  reduce using rule 64 (MULTOP)
+
+
+State 136
+
+   62 ADDIOP: EXPR . '+' EXPR
+   63       | EXPR . '-' EXPR
+   64 MULTOP: EXPR . '*' EXPR
+   65       | EXPR . '/' EXPR
+   65       | EXPR '/' EXPR .
+   66 RELAOP: EXPR . '>' EXPR
+   67       | EXPR . '<' EXPR
+   68       | EXPR . ">=" EXPR
+   69       | EXPR . "<=" EXPR
+   70 EQLTOP: EXPR . "==" EXPR
+   71       | EXPR . "!=" EXPR
+
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
+
+    '+'       [reduce using rule 65 (MULTOP)]
+    '-'       [reduce using rule 65 (MULTOP)]
+    '*'       [reduce using rule 65 (MULTOP)]
+    '/'       [reduce using rule 65 (MULTOP)]
+    '>'       [reduce using rule 65 (MULTOP)]
+    '<'       [reduce using rule 65 (MULTOP)]
+    ">="      [reduce using rule 65 (MULTOP)]
+    "<="      [reduce using rule 65 (MULTOP)]
+    "=="      [reduce using rule 65 (MULTOP)]
+    "!="      [reduce using rule 65 (MULTOP)]
+    $default  reduce using rule 65 (MULTOP)
+
+
+State 137
+
+   62 ADDIOP: EXPR . '+' EXPR
+   63       | EXPR . '-' EXPR
+   64 MULTOP: EXPR . '*' EXPR
+   65       | EXPR . '/' EXPR
+   66 RELAOP: EXPR . '>' EXPR
+   66       | EXPR '>' EXPR .
+   67       | EXPR . '<' EXPR
+   68       | EXPR . ">=" EXPR
+   69       | EXPR . "<=" EXPR
+   70 EQLTOP: EXPR . "==" EXPR
+   71       | EXPR . "!=" EXPR
+
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
+
+    '+'       [reduce using rule 66 (RELAOP)]
+    '-'       [reduce using rule 66 (RELAOP)]
+    '*'       [reduce using rule 66 (RELAOP)]
+    '/'       [reduce using rule 66 (RELAOP)]
+    '>'       [reduce using rule 66 (RELAOP)]
+    '<'       [reduce using rule 66 (RELAOP)]
+    ">="      [reduce using rule 66 (RELAOP)]
+    "<="      [reduce using rule 66 (RELAOP)]
+    "=="      [reduce using rule 66 (RELAOP)]
+    "!="      [reduce using rule 66 (RELAOP)]
+    $default  reduce using rule 66 (RELAOP)
+
+
+State 138
+
+   62 ADDIOP: EXPR . '+' EXPR
+   63       | EXPR . '-' EXPR
+   64 MULTOP: EXPR . '*' EXPR
+   65       | EXPR . '/' EXPR
+   66 RELAOP: EXPR . '>' EXPR
+   67       | EXPR . '<' EXPR
+   67       | EXPR '<' EXPR .
+   68       | EXPR . ">=" EXPR
+   69       | EXPR . "<=" EXPR
+   70 EQLTOP: EXPR . "==" EXPR
+   71       | EXPR . "!=" EXPR
+
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
+
+    '+'       [reduce using rule 67 (RELAOP)]
+    '-'       [reduce using rule 67 (RELAOP)]
+    '*'       [reduce using rule 67 (RELAOP)]
+    '/'       [reduce using rule 67 (RELAOP)]
+    '>'       [reduce using rule 67 (RELAOP)]
+    '<'       [reduce using rule 67 (RELAOP)]
+    ">="      [reduce using rule 67 (RELAOP)]
+    "<="      [reduce using rule 67 (RELAOP)]
+    "=="      [reduce using rule 67 (RELAOP)]
+    "!="      [reduce using rule 67 (RELAOP)]
+    $default  reduce using rule 67 (RELAOP)
+
+
+State 139
+
+   62 ADDIOP: EXPR . '+' EXPR
+   63       | EXPR . '-' EXPR
+   64 MULTOP: EXPR . '*' EXPR
+   65       | EXPR . '/' EXPR
+   66 RELAOP: EXPR . '>' EXPR
+   67       | EXPR . '<' EXPR
+   68       | EXPR . ">=" EXPR
+   68       | EXPR ">=" EXPR .
+   69       | EXPR . "<=" EXPR
+   70 EQLTOP: EXPR . "==" EXPR
+   71       | EXPR . "!=" EXPR
+
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
+
+    '+'       [reduce using rule 68 (RELAOP)]
+    '-'       [reduce using rule 68 (RELAOP)]
+    '*'       [reduce using rule 68 (RELAOP)]
+    '/'       [reduce using rule 68 (RELAOP)]
+    '>'       [reduce using rule 68 (RELAOP)]
+    '<'       [reduce using rule 68 (RELAOP)]
+    ">="      [reduce using rule 68 (RELAOP)]
+    "<="      [reduce using rule 68 (RELAOP)]
+    "=="      [reduce using rule 68 (RELAOP)]
+    "!="      [reduce using rule 68 (RELAOP)]
+    $default  reduce using rule 68 (RELAOP)
+
+
+State 140
+
+   62 ADDIOP: EXPR . '+' EXPR
+   63       | EXPR . '-' EXPR
+   64 MULTOP: EXPR . '*' EXPR
+   65       | EXPR . '/' EXPR
+   66 RELAOP: EXPR . '>' EXPR
+   67       | EXPR . '<' EXPR
+   68       | EXPR . ">=" EXPR
+   69       | EXPR . "<=" EXPR
+   69       | EXPR "<=" EXPR .
+   70 EQLTOP: EXPR . "==" EXPR
+   71       | EXPR . "!=" EXPR
+
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
+
+    '+'       [reduce using rule 69 (RELAOP)]
+    '-'       [reduce using rule 69 (RELAOP)]
+    '*'       [reduce using rule 69 (RELAOP)]
+    '/'       [reduce using rule 69 (RELAOP)]
+    '>'       [reduce using rule 69 (RELAOP)]
+    '<'       [reduce using rule 69 (RELAOP)]
+    ">="      [reduce using rule 69 (RELAOP)]
+    "<="      [reduce using rule 69 (RELAOP)]
+    "=="      [reduce using rule 69 (RELAOP)]
+    "!="      [reduce using rule 69 (RELAOP)]
+    $default  reduce using rule 69 (RELAOP)
+
+
+State 141
+
+   62 ADDIOP: EXPR . '+' EXPR
+   63       | EXPR . '-' EXPR
+   64 MULTOP: EXPR . '*' EXPR
+   65       | EXPR . '/' EXPR
+   66 RELAOP: EXPR . '>' EXPR
+   67       | EXPR . '<' EXPR
+   68       | EXPR . ">=" EXPR
+   69       | EXPR . "<=" EXPR
+   70 EQLTOP: EXPR . "==" EXPR
+   70       | EXPR "==" EXPR .
+   71       | EXPR . "!=" EXPR
+
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
+
+    '+'       [reduce using rule 70 (EQLTOP)]
+    '-'       [reduce using rule 70 (EQLTOP)]
+    '*'       [reduce using rule 70 (EQLTOP)]
+    '/'       [reduce using rule 70 (EQLTOP)]
+    '>'       [reduce using rule 70 (EQLTOP)]
+    '<'       [reduce using rule 70 (EQLTOP)]
+    ">="      [reduce using rule 70 (EQLTOP)]
+    "<="      [reduce using rule 70 (EQLTOP)]
+    "=="      [reduce using rule 70 (EQLTOP)]
+    "!="      [reduce using rule 70 (EQLTOP)]
+    $default  reduce using rule 70 (EQLTOP)
+
+
 State 142
+
+   62 ADDIOP: EXPR . '+' EXPR
+   63       | EXPR . '-' EXPR
+   64 MULTOP: EXPR . '*' EXPR
+   65       | EXPR . '/' EXPR
+   66 RELAOP: EXPR . '>' EXPR
+   67       | EXPR . '<' EXPR
+   68       | EXPR . ">=" EXPR
+   69       | EXPR . "<=" EXPR
+   70 EQLTOP: EXPR . "==" EXPR
+   71       | EXPR . "!=" EXPR
+   71       | EXPR "!=" EXPR .
+
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
+
+    '+'       [reduce using rule 71 (EQLTOP)]
+    '-'       [reduce using rule 71 (EQLTOP)]
+    '*'       [reduce using rule 71 (EQLTOP)]
+    '/'       [reduce using rule 71 (EQLTOP)]
+    '>'       [reduce using rule 71 (EQLTOP)]
+    '<'       [reduce using rule 71 (EQLTOP)]
+    ">="      [reduce using rule 71 (EQLTOP)]
+    "<="      [reduce using rule 71 (EQLTOP)]
+    "=="      [reduce using rule 71 (EQLTOP)]
+    "!="      [reduce using rule 71 (EQLTOP)]
+    $default  reduce using rule 71 (EQLTOP)
+
+
+State 143
+
+   40 ASSIGN: ID '[' EXPR ']' '=' . EXPR
+
+    INTNUM    shift, and go to state 70
+    FLOATNUM  shift, and go to state 71
+    ID        shift, and go to state 72
+    UNARY     shift, and go to state 73
+    '('       shift, and go to state 74
+
+    CALL    go to state 75
+    EXPR    go to state 150
+    UNOP    go to state 77
+    ADDIOP  go to state 78
+    MULTOP  go to state 79
+    RELAOP  go to state 80
+    EQLTOP  go to state 81
+    ID_S    go to state 82
+
+
+State 144
 
    42 CALL: ID '(' ARG ')' ';' .
 
     $default  reduce using rule 42 (CALL)
 
 
-State 143
+State 145
 
    44 ARG: EXPR ',' ARG .
 
     $default  reduce using rule 44 (ARG)
 
 
-State 144
+State 146
 
    48 FOR_S: FOR '(' ASSIGN ';' EXPR . ';' ASSIGN ')' STMT
    62 ADDIOP: EXPR . '+' EXPR
@@ -2520,27 +2536,27 @@ State 144
    70 EQLTOP: EXPR . "==" EXPR
    71       | EXPR . "!=" EXPR
 
-    ';'   shift, and go to state 149
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
+    ';'   shift, and go to state 151
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
 
 
-State 145
+State 147
 
    46 WHILE_S: WHILE '(' EXPR ')' STMT .
 
     $default  reduce using rule 46 (WHILE_S)
 
 
-State 146
+State 148
 
    47 WHILE_S: DO STMT WHILE '(' EXPR . ')' ';'
    62 ADDIOP: EXPR . '+' EXPR
@@ -2554,33 +2570,33 @@ State 146
    70 EQLTOP: EXPR . "==" EXPR
    71       | EXPR . "!=" EXPR
 
-    ')'   shift, and go to state 150
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
+    ')'   shift, and go to state 152
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
 
 
-State 147
+State 149
 
    49 IF_S: IF '(' EXPR ')' STMT . ELSE STMT
    50     | IF '(' EXPR ')' STMT .
 
-    ELSE  shift, and go to state 151
+    ELSE  shift, and go to state 153
 
     ELSE      [reduce using rule 50 (IF_S)]
     $default  reduce using rule 50 (IF_S)
 
 
-State 148
+State 150
 
-   40 ASSIGN: ID '[' EXPR ']' '=' EXPR . ';'
+   40 ASSIGN: ID '[' EXPR ']' '=' EXPR .
    62 ADDIOP: EXPR . '+' EXPR
    63       | EXPR . '-' EXPR
    64 MULTOP: EXPR . '*' EXPR
@@ -2592,36 +2608,37 @@ State 148
    70 EQLTOP: EXPR . "==" EXPR
    71       | EXPR . "!=" EXPR
 
-    ';'   shift, and go to state 152
-    '+'   shift, and go to state 108
-    '-'   shift, and go to state 109
-    '*'   shift, and go to state 110
-    '/'   shift, and go to state 111
-    '>'   shift, and go to state 112
-    '<'   shift, and go to state 113
-    ">="  shift, and go to state 114
-    "<="  shift, and go to state 115
-    "=="  shift, and go to state 116
-    "!="  shift, and go to state 117
+    '+'   shift, and go to state 109
+    '-'   shift, and go to state 110
+    '*'   shift, and go to state 111
+    '/'   shift, and go to state 112
+    '>'   shift, and go to state 113
+    '<'   shift, and go to state 114
+    ">="  shift, and go to state 115
+    "<="  shift, and go to state 116
+    "=="  shift, and go to state 117
+    "!="  shift, and go to state 118
+
+    $default  reduce using rule 40 (ASSIGN)
 
 
-State 149
+State 151
 
    48 FOR_S: FOR '(' ASSIGN ';' EXPR ';' . ASSIGN ')' STMT
 
     ID  shift, and go to state 99
 
-    ASSIGN  go to state 153
+    ASSIGN  go to state 154
 
 
-State 150
+State 152
 
    47 WHILE_S: DO STMT WHILE '(' EXPR ')' . ';'
 
-    ';'  shift, and go to state 154
+    ';'  shift, and go to state 155
 
 
-State 151
+State 153
 
    49 IF_S: IF '(' EXPR ')' STMT ELSE . STMT
 
@@ -2634,7 +2651,7 @@ State 151
     '{'     shift, and go to state 36
 
     COMPOUNDSTMT  go to state 51
-    STMT          go to state 155
+    STMT          go to state 156
     ASSIGN        go to state 53
     CALL          go to state 54
     WHILE_S       go to state 55
@@ -2642,35 +2659,28 @@ State 151
     IF_S          go to state 57
 
 
-State 152
-
-   40 ASSIGN: ID '[' EXPR ']' '=' EXPR ';' .
-
-    $default  reduce using rule 40 (ASSIGN)
-
-
-State 153
+State 154
 
    48 FOR_S: FOR '(' ASSIGN ';' EXPR ';' ASSIGN . ')' STMT
 
-    ')'  shift, and go to state 156
+    ')'  shift, and go to state 157
 
 
-State 154
+State 155
 
    47 WHILE_S: DO STMT WHILE '(' EXPR ')' ';' .
 
     $default  reduce using rule 47 (WHILE_S)
 
 
-State 155
+State 156
 
    49 IF_S: IF '(' EXPR ')' STMT ELSE STMT .
 
     $default  reduce using rule 49 (IF_S)
 
 
-State 156
+State 157
 
    48 FOR_S: FOR '(' ASSIGN ';' EXPR ';' ASSIGN ')' . STMT
 
@@ -2683,7 +2693,7 @@ State 156
     '{'     shift, and go to state 36
 
     COMPOUNDSTMT  go to state 51
-    STMT          go to state 157
+    STMT          go to state 158
     ASSIGN        go to state 53
     CALL          go to state 54
     WHILE_S       go to state 55
@@ -2691,7 +2701,7 @@ State 156
     IF_S          go to state 57
 
 
-State 157
+State 158
 
    48 FOR_S: FOR '(' ASSIGN ';' EXPR ';' ASSIGN ')' STMT .
 
