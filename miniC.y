@@ -39,9 +39,6 @@
 %token <id> FOR <id> WHILE <id> DO <id> IF <id> ELSE
 %token <id> RELA <id> EQLT
 %token <id> RETURN
-%token <id> ASNMT
-%token <id> MULT
-%token <id> ADDI
 %token <id> UNARY
 
 %type <ptr_program> PROGRAM;
@@ -188,6 +185,40 @@ FLOAT ID '(' PARAMETER ')' COMPOUNDSTMT{
 	func->cstmt=$6;
 	$$=func;
 }
+|
+INT ID '(' ')' COMPOUNDSTMT FUNCTION{
+	struct FUNCTION *func = (struct FUNCTION *) malloc (sizeof (struct FUNCTION));
+	func->t=eInt;
+	func->ID=$2;
+	func->cstmt=$5;
+	func->prev=$5;
+	$$=func;
+}
+|
+INT ID '(' ')' COMPOUNDSTMT{
+	struct FUNCTION *func = (struct FUNCTION *) malloc (sizeof (struct FUNCTION));
+	func->t=eInt;
+	func->ID=$2;
+	func->cstmt=$5;
+	$$=func;
+}
+|
+FLOAT ID '(' ')' COMPOUNDSTMT FUNCTION{
+	struct FUNCTION *func = (struct FUNCTION *) malloc (sizeof (struct FUNCTION));
+	func->t=eFloat;
+	func->ID=$2;
+	func->cstmt=$5;
+	func->prev=$6;
+	$$=func;
+}
+|
+FLOAT ID '(' ')' COMPOUNDSTMT{
+	struct FUNCTION *func = (struct FUNCTION *) malloc (sizeof (struct FUNCTION));
+	func->t=eFloat;
+	func->ID=$2;
+	func->cstmt=$5;
+	$$=func;
+}
 ;
 PARAMETER : 
 INT IDENTIFIER PARAMETER{
@@ -216,6 +247,17 @@ COMPOUNDSTMT :
 '{' STMT '}' {
 	struct COMPOUNDSTMT *cstmt = (struct COMPOUNDSTMT *) malloc (sizeof (struct COMPOUNDSTMT));
 	cstmt->stmt=$2;
+	$$=cstmt;
+}
+|
+'{' DECLARATION '}' {
+	struct COMPOUNDSTMT *cstmt = (struct COMPOUNDSTMT *) malloc (sizeof (struct COMPOUNDSTMT));
+	cstmt->decl=$2;
+	$$=cstmt;
+}
+|
+'{' '}' {
+	struct COMPOUNDSTMT *cstmt = (struct COMPOUNDSTMT *) malloc (sizeof (struct COMPOUNDSTMT));
 	$$=cstmt;
 }
 ;
@@ -415,20 +457,6 @@ IF '(' EXPR ')' STMT {
 ;
 
 EXPR : 
-INTNUM {
-	struct EXPR *exp = (struct EXPR *) malloc (sizeof (struct EXPR));
-	exp->e = eIntnum;
-	exp->expression.intnum=$1;
-	$$=exp;
-}
-|
-FLOATNUM {
-	struct EXPR *exp = (struct EXPR *) malloc (sizeof (struct EXPR));
-	exp->e = eFloatnum;
-	exp->expression.floatnum=$1;
-	$$=exp;
-}
-|
 UNOP {
 	struct EXPR *exp = (struct EXPR *) malloc (sizeof (struct EXPR));
 	exp->e = eUnop;
@@ -482,6 +510,20 @@ ID_S {
 	struct EXPR *exp = (struct EXPR *) malloc (sizeof (struct EXPR));
 	exp->e = eId;
 	exp->expression.ID_=$1;
+	$$=exp;
+}
+|
+INTNUM {
+	struct EXPR *exp = (struct EXPR *) malloc (sizeof (struct EXPR));
+	exp->e = eIntnum;
+	exp->expression.intnum=$1;
+	$$=exp;
+}
+|
+FLOATNUM {
+	struct EXPR *exp = (struct EXPR *) malloc (sizeof (struct EXPR));
+	exp->e = eFloatnum;
+	exp->expression.floatnum=$1;
 	$$=exp;
 }
 ;
@@ -584,12 +626,18 @@ ID EXPR {
 	is->expr = $2;
 	$$=is;
 }
+|
+ID{
+	struct ID_S *is = (struct ID_S *) malloc (sizeof (struct ID_S));
+	is->ID = $1;
+	$$=is;
+}
 ;
 %%
 /* USER CODE */
 int yyerror(char const *str) {
     extern char *yytext;
     extern char *yylineno;
-    printf("parser error near %d %s\n", yylineno, yytext);
+    printf("parser error near line : %d, error token is \"%s\"\n", yylineno, yytext);
     return 0;
 }
